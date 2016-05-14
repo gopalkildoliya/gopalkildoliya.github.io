@@ -7,7 +7,7 @@ body {
   background: #333333;
 }
 section {
-  max-width: 175px;
+  max-width: 500px;
   margin: 0 auto;
   display: block;
   padding: 2em;
@@ -26,4 +26,6 @@ span {
   display: block;
 }
 .carddemoBasicUsage .card-media {
-  background-color: #999999; }
+  background-color: #999999; 
+    
+}
