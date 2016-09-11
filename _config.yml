@@ -1,7 +1,7 @@
 # Site settings
 title: Gopal's CV 
 description: gopal's CV
-favicon: /assets/img/gopal.JPG
+favicon: /assets/img/gopal.jpg
 baseurl: https://gopalkildoliya.github.io
 url: https://gopalkildoliya.github.io
 # rss_url: /pages/atom.xml
