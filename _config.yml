@@ -1,0 +1,72 @@
+# Site settings
+title: Gopal's CV 
+description: gopal's CV
+favicon: /assets/img/avatar.JPG
+baseurl: https://gopalkildoliya.github.io
+url: https://gopalkildoliya.github.io
+rss_url: /pages/atom.xml
+google_analytics: UA-63653234-1
+
+# Build settings
+markdown: kramdown
+
+exclude: [vendor]
+
+# Author settings
+author:
+  name: Gopal Kildoliya
+  title: PHP Developer
+  address: New Delhi, India
+  email: gopalkildoliya@gmail.com
+  link: http://gopalkildoliya.github.io
+  weibo:
+  github: gopalkildoliya
+  linkedin: gopalkildoliya
+  twitter: gopalkildoliya
+  gavatar: /assets/img/avatar.JPG
+  stackoverflow:
+#  stackoverflow: 4582127
+  workHistory:
+    - work1:
+      company: BaseApp Systems
+      location: New Delhi, India
+      title: Software Developer
+      started: 2015
+      duration: (2015 - Present)
+      description: Application development with PHP and Python.
+    
+  educationHistory:
+    - education1:
+      organization: Rajasthan Technical  University
+      location: Rajasthan, India
+      degree: B. Tech.
+      started: 2010
+      duration: (2010 - 2014)
+      description: 
+  languages:
+    - language1:
+      name: Hindi
+      proficiency: Native
+    - language2:
+      name: English
+      proficiency: Professional
+    
+  programmingSkills:
+    - skill1:
+      name: HTML
+      percentage: 100%
+    - skill2:
+      name: Bootstrap
+      percentage: 90%
+    - skill3:
+      name: JavaScript
+      percentage: 70%
+    - skill4:
+      name: AngularJS
+      percentage: 70%
+    - skill5:
+      name: PHP
+      percentage: 90%
+    - skill6:
+      name: Python
+      percentage: 75%
