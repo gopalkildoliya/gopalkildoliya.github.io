@@ -1,263 +1,307 @@
----
-layout: default
----
-<div class="container-fluid">
-    <div class="row-fluid">
-        <div class="col-md-8">
-            {% if site.author.workHistory %}
-                <h3 class="title with-icon"><span class="glyphicon glyphicon-plane cat-title"></span>Work History</h3>
-                <ul class="timeline">
-                    {% for work in site.author.workHistory %}
-                        <li class="timeline-inverted">
-                            {% if work.started %}
-                                <div class="timeline-badge info">{{ work.started }}</div>
-                            {% endif %}
-                            <div class="timeline-panel grid-block">
-                                <div class="timeline-heading">
-                                    {% if work.company %}
-                                        <h4 class="timeline-title">{{ work.company }} </h4>
-                                    {% endif %}
-                                    <p>
-                                        <small class="text-muted">
-                                            {% if work.title %}
-                                                {{ work.title }}
-                                            {% endif %}
-                                        </small>
-                                    </p>
-                                    <p>
-                                        <small class="text-muted">
-                                            {% if work.duration %}
-                                                <i class="fa fa-calendar"></i> {{ work.duration }} |
-                                            {% endif %}
-                                            {% if work.location %}
-                                                <i class="fa fa-map-marker"></i>  {{ work.location }}
-                                            {% endif %}
-                                        </small>
-                                    </p>
-                                </div>
-                                <div class="timeline-body">
-                                    {% if work.description %}
-                                        <p>{{ work.description }}</p>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-            {% if site.author.educationHistory %}
-                <h3 class="title with-icon"><span class="fa fa-book cat-title"></span>Education History</h3>
-                <ul class="timeline">
-                    {% for education in site.author.educationHistory %}
-                        <li class="timeline-inverted">
-                            {% if education.started %}
-                                <div class="timeline-badge info">{{ education.started }}</div>
-                            {% endif %}
-                            <div class="timeline-panel grid-block">
-                                <div class="timeline-heading">
-                                    {% if education.organization %}
-                                        <h4 class="timeline-title">{{ education.organization }}</h4>
-                                    {% endif %}
-                                    <p>
-                                        <small class="text-muted">
-                                            {% if education.degree %}
-                                                {{ education.degree }}
-                                            {% endif %}
-                                            {% if education.major %}
-                                                , {{ education.major }}
-                                            {% endif %}
-                                        </small>
-                                    </p>
-                                    <p>
-                                        <small class="text-muted">
-                                            {% if education.duration %}
-                                                <i class="fa fa-calendar"></i> {{ education.duration }} |
-                                            {% endif %}
-                                            {% if education.location %}
-                                                <i class="fa fa-map-marker"></i>  {{ education.location }}
-                                            {% endif %}
-                                        </small>
-                                    </p>
-                                </div>
-                                <div class="timeline-body">
-                                    {% if education.description %}
-                                        <p>{{ education.description }}</p>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-        <div class="col-md-4">
-            {% if site.author.stackoverflow or site.author.programmingSkills %}
-                <h3 class="title with-icon"><span class="fa fa-code cat-title"></span> Programming Skills</h3>
-                {% if site.author.stackoverflow %}
-                <div class="grid-block">
-                  <p><a href="//stackoverflow.com/users/{{ site.author.stackoverflow }}"><img src="//stackoverflow.com/users/flair/{{ site.author.stackoverflow }}.png"></a></p>
-                  <ul class="list-unstyled list-stackoverflow" id="stackoverflow_questions_and_answers"></ul>
-                  <script type="text/javascript">
-                  $(function () {
-                    var api_url_user = "//api.stackexchange.com/2.2/users/{{ site.author.stackoverflow }}/answers?pagesize=5&order=desc&sort=votes&site=stackoverflow";
-                    var api_url_format_questions = "//api.stackexchange.com/2.2/questions/%question_ids%?site=stackoverflow";
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Nightkeeper — a self-hosted Laravel Nightwatch cloud</title>
+    <meta name="description" content="Nightkeeper is a self-hosted implementation of Laravel Nightwatch's cloud dashboard. Keep the official agent, own your telemetry.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
 
-                    $.get(api_url_user, function (data_user) {
-                      if (!data_user) {
-                        return;
-                      }
-                      if (!data_user.items) {
-                        return;
-                      }
-                      if (!data_user.items.length) {
-                        return;
-                      }
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Nightkeeper — a self-hosted Laravel Nightwatch cloud">
+    <meta property="og:description" content="Keep the official nightwatch:agent. Point it at a server you control instead of a hosted dashboard.">
+    <meta name="twitter:card" content="summary">
 
-                      var question_ids = [];
-                      var complex_questions = {};
-                      $.each(data_user.items, function (index, item) {
-                        if (!item) {
-                          return;
-                        }
-                        if (!item.question_id) {
-                          return;
-                        }
-                        if (!item.answer_id) {
-                          return;
-                        }
-                        if (!item.score) {
-                          return;
-                        }
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%230b0f1a'/%3E%3Cpath d='M15.5 4.5a8 8 0 1 0 4 8 6.2 6.2 0 0 1-4-8Z' fill='%236366f1'/%3E%3C/svg%3E">
 
-                        complex_questions[item.question_id] = {
-                          "question_id": item.question_id,
-                          "answer_id": item.answer_id,
-                          "score": humanize_score(item.score),
-                          "is_accepted": item.is_accepted
-                        };
-                        question_ids.push(item.question_id);
-                      });
+    <style>
+        :root {
+            --bg: #0a0e1a;
+            --card: #111729;
+            --border: #202942;
+            --text: #e6e9f2;
+            --muted: #8b93ab;
+            --accent: #818cf8;
+            --accent-strong: #6366f1;
+            --radius: 12px;
+            color-scheme: dark;
+        }
 
-                      var api_url_questions = api_url_format_questions.replace('%question_ids%', question_ids.join(';'));
+        * {
+            box-sizing: border-box;
+        }
 
-                      $.get(api_url_questions, function (data_questions) {
-                        if (!data_questions) {
-                          return;
-                        }
-                        if (!data_questions.items) {
-                          return;
-                        }
-                        if (!data_questions.items.length) {
-                          return;
-                        }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
 
-                        $.each(data_questions.items, function (index, item) {
-                          if (!item) {
-                            return;
-                          }
-                          if (!item.question_id) {
-                            return;
-                          }
-                          var complex_question = complex_questions[item.question_id];
-                          if (!complex_question) {
-                            return;
-                          }
+        code {
+            font-family: 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 0.9em;
+        }
 
-                          complex_question.title = item.title;
-                          complex_question.link = item.link;
-                        });
+        a {
+            color: var(--accent);
+        }
 
-                        render_complex_questions(complex_questions);
-                      });
-                    });
-                  });
-                  function humanize_score(score) {
-                    if (!score) {
-                      return;
-                    }
+        .project {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 64px 24px 80px;
+        }
 
-                    if (score / 1000 > 1) {
-                      return (score / 1000) + "k";
-                    } else {
-                      return score;
-                    }
-                  }
-                  function render_complex_questions(complex_questions) {
-                    if (!complex_questions) {
-                      return;
-                    }
+        .eyebrow {
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin: 0 0 14px;
+        }
 
-                    complex_questions = $.map(complex_questions, function (complex_question) {
-                      return [complex_question];
-                    });
-                    complex_questions.sort(function (a, b) {
-                      return b.score - a.score;
-                    });
+        h1 {
+            font-size: clamp(2rem, 5vw, 2.75rem);
+            margin: 0 0 10px;
+            letter-spacing: -0.01em;
+        }
 
-                    $stackoverflow_questions_and_answers = $('#stackoverflow_questions_and_answers');
+        .tagline {
+            color: var(--muted);
+            font-size: 1.1rem;
+            max-width: 560px;
+            margin: 0 0 28px;
+        }
 
-                    $.each(complex_questions, function (index, complex_question) {
-                      var link = complex_question.link + '#answer-' + complex_question.answer_id;
-                      var $li = $('<li />');
-                      $('<span />')
-                        .addClass('badge')
-                        .addClass(complex_question.is_accepted ? 'progress-bar-success' : '')
-                        .text(complex_question.score)
-                        .appendTo($li);
-                      $('<a />')
-                        .attr('href', link)
-                        .attr('target', '_blank')
-                        .text(complex_question.title)
-                        .appendTo($li);
-                      $li.appendTo($stackoverflow_questions_and_answers);
-                    });
-                  }
-                  </script>
-                </div>
-                {% endif %}
-                {% if site.author.programmingSkills %}
-                <div class="grid-block">
-                    <ul class="list-unstyled list-skills">
-                        {% for programmingSkill in site.author.programmingSkills %}
-                            <li>
-                                {% if programmingSkill.name %}
-                                    <span class="caption-skill">{{ programmingSkill.name }}</span>
-                                {% endif %}
-                                {% if programmingSkill.percentage %}
-                                    <div class="progress">
-                                        <div class="progress-bar" style="width: {{ programmingSkill.percentage }}">
-                                            <span>{{ programmingSkill.percentage }} </span>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
-            {% endif %}
-            {% if site.author.languages %}
-                <div class="deviter"></div>
-                <h3 class="title with-icon"><span class="fa fa-globe cat-title"></span> Language Skills</h3>
-                <div class="grid-block">
-                    <ul class="list-unstyled list-strip">
-                        {% for language in site.author.languages %}
-                            {% if language.name %}
-                                {% if language.proficiency %}
-                                    <li>
-                                        <i class="fa fa-check"></i> <span class="badge badge-green badge-right-float">{{ language.proficiency }}</span>{{ language.name }}
-                                    </li>
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-            <div class="deviter"></div>
-            <h3 class="title with-icon"><span class="fa fa-location-arrow cat-title"></span> Location</h3>
-            <div class="grid-block">
-                <iframe src="https://www.google.com/maps/embed/v1/place?q={{ site.author.address }}&key=AIzaSyClEWLh20lxrQBFR7omuuVESviszPxONyk" width="100%" height="100%" frameborder="0" style="border:0"></iframe>
+        .btn {
+            display: inline-block;
+            background: var(--accent-strong);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .btn:hover {
+            background: var(--accent);
+        }
+
+        .btn-ghost {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: none;
+        }
+
+        figure.screenshot {
+            margin: 40px 0;
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 30px 80px -24px rgba(0, 0, 0, 0.65);
+        }
+
+        figure.screenshot a {
+            display: block;
+        }
+
+        figure.screenshot img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        figure.screenshot figcaption {
+            padding: 12px 18px;
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        section {
+            margin: 40px 0;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            margin: 0 0 14px;
+            letter-spacing: -0.01em;
+        }
+
+        p {
+            color: var(--muted);
+            margin: 0 0 14px;
+        }
+
+        ul.feature-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 10px;
+        }
+
+        ul.feature-list li {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        ul.feature-list li strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        ul.feature-list li span {
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        ol.steps {
+            margin: 0;
+            padding-left: 20px;
+            color: var(--muted);
+        }
+
+        ol.steps li {
+            margin-bottom: 10px;
+        }
+
+        ol.steps code {
+            color: var(--text);
+        }
+
+        .stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .stack span {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 5px 12px;
+            font-size: 0.85rem;
+            color: var(--text);
+        }
+
+        .project-footer {
+            margin-top: 56px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <article class="project">
+        <header>
+            <p class="eyebrow">Side project · Laravel · Open source</p>
+            <h1>Nightkeeper</h1>
+            <p class="tagline">
+                A self-hosted implementation of
+                <a href="https://nightwatch.laravel.com" target="_blank" rel="noopener">Laravel Nightwatch</a>'s
+                cloud dashboard — keep the official agent, own your telemetry.
+            </p>
+            <a class="btn" href="https://github.com/gopalkildoliya/nightkeeper" target="_blank" rel="noopener">View on GitHub ↗</a>
+        </header>
+
+        <figure class="screenshot">
+            <a href="https://raw.githubusercontent.com/gopalkildoliya/nightkeeper/main/docs/dashboard.png" target="_blank" rel="noopener">
+                <img
+                    src="https://raw.githubusercontent.com/gopalkildoliya/nightkeeper/main/docs/dashboard.png"
+                    alt="Nightkeeper overview dashboard showing total activity, latency, job attempts, exceptions, and query charts for one environment"
+                    loading="lazy"
+                >
+            </a>
+            <figcaption>The overview dashboard for one environment — live request, query, job, and exception telemetry.</figcaption>
+        </figure>
+
+        <section>
+            <h2>What it is</h2>
+            <p>
+                Nightwatch's local agent (<code>php artisan nightwatch:agent</code>) streams request, query,
+                exception, job, and command telemetry from a Laravel app to a hosted dashboard over a small HTTP
+                contract — nothing about that contract is tied to Laravel's own servers. Nightkeeper re-implements
+                just that hosted half: it authenticates the agent, accepts its ingest batches, and renders the
+                same categories of data the monitored app already produces. No telemetry leaves infrastructure
+                you control, and there's no recurring bill for the privilege of seeing your own exceptions.
+            </p>
+        </section>
+
+        <section>
+            <h2>What it does</h2>
+            <ul class="feature-list">
+                <li>
+                    <strong>Multi-tenant by design</strong>
+                    <span>Organizations → Applications → Environments, each with its own rotatable ingest token.</span>
+                </li>
+                <li>
+                    <strong>Full event coverage</strong>
+                    <span>Requests, queries, exceptions, commands, scheduled tasks, jobs, outgoing requests, cache, mail, and notifications — grouped and aggregated.</span>
+                </li>
+                <li>
+                    <strong>Request waterfalls</strong>
+                    <span>Every trace reconstructed span-by-span, from bootstrap through termination.</span>
+                </li>
+                <li>
+                    <strong>Sentry-style issue tracking</strong>
+                    <span>Unhandled exceptions grouped by class/file/line — occurrence counts, affected users, real stack traces, open/close workflow.</span>
+                </li>
+                <li>
+                    <strong>Signed ingest auth</strong>
+                    <span>Short-lived HMAC-signed JWTs issued per environment, rotatable on demand.</span>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>How it works</h2>
+            <ol class="steps">
+                <li>The agent authenticates: <code>POST /api/agent-auth</code> with an environment's ingest token returns a short-lived signed JWT.</li>
+                <li>It streams telemetry: gzip'd JSON batches of records are POSTed to <code>/api/ingest</code>.</li>
+                <li>Nightkeeper indexes and shows it: events are grouped, aggregated, and rendered across the same dashboards a hosted product would give you.</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Built with</h2>
+            <div class="stack">
+                <span>Laravel</span>
+                <span>Inertia</span>
+                <span>React</span>
+                <span>Tailwind CSS</span>
+                <span>SQLite / MySQL</span>
             </div>
-        </div>
-    </div>
-</div>
+        </section>
+
+        <footer class="project-footer">
+            <a class="btn" href="https://github.com/gopalkildoliya/nightkeeper" target="_blank" rel="noopener">View source on GitHub ↗</a>
+            <a class="btn btn-ghost" href="https://github.com/gopalkildoliya/nightkeeper#readme" target="_blank" rel="noopener">Read the README ↗</a>
+        </footer>
+    </article>
+</body>
+</html>
